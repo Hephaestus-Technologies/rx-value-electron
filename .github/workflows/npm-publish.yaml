@@ -1,0 +1,44 @@
+name: Node.js package
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 12
+
+      - name: Bump Version and Push Tag
+        id: bump_version
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          PRERELEASE_SUFFIX: dev
+
+      - name: Build
+        run: |
+          npm install
+          tsc
+          node scripts/bump-version.mjs
+        env:
+          version: ${{ steps.bump_version.outputs.new_tag }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish
+        run: |
+          cp ./README.md ./.bin/README.md
+          npm publish .bin
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

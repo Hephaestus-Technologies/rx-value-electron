@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "target": "ESNext",
+    "declaration": true,
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "newLine": "lf",
+    "outDir": ".bin"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "compileOnSave": true
+}
