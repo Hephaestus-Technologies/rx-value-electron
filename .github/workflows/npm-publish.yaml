@@ -30,6 +30,7 @@ jobs:
       - name: Build
         run: |
           npm install
+          npm install electron
           tsc
           node scripts/bump-version.mjs
         env:
